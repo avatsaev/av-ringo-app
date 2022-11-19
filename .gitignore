@@ -10,3 +10,8 @@ node_modules
 # Project
 public
 __tests__/__snapshots__
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml

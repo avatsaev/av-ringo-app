@@ -2,13 +2,33 @@ import express from 'express';
 import helmet from 'helmet';
 import { join } from 'path';
 import { log } from 'winston';
-
+import WebSocketServer from 'ws';
 /**
  * Configures hot reloading and assets paths for local development environment.
  * Use the `npm start` command to start the local development server.
  *
  * @param app Express app
  */
+
+// Creating a new websocket server
+const wss = new WebSocketServer.Server({ port: 8080 })
+
+wss.on("connection", ws => {
+    console.log("new client connected");
+    // sending message
+    ws.on("message", data => {
+        console.log(`Client has sent us: ${data}`)
+    });
+    // handling what to do when clients disconnects from server
+    ws.on("close", () => {
+        console.log("the client has connected");
+    });
+    // handling client connection error
+    ws.onerror = function () {
+        console.log("Some Error occurred")
+    }
+});
+
 const configureDevelopment = (app) => {
     const clientConfig = require('../webpack/client/dev');
     const serverConfig = require('../webpack/server/dev');

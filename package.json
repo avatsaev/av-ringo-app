@@ -2,11 +2,15 @@
   "name": "react-ssr-template",
   "version": "3.0.0",
   "description": "Server side rendering template for React 16",
-  "main": "src/index.js",
+  "main": "index.js",
   "scripts": {
-    "start": "cross-env NODE_ENV=development babel-node src/index",
+    "start": "NODE_ENV=production node index",
+    "start:dev": "cross-env NODE_ENV=development babel-node src/index",
     "watch": "cross-env NODE_ENV=development nodemon src/index",
     "build": "npm-run-all -p build:client build:server build:node",
+    "postbuild": "cd public && zip -r ../deploy.zip ./*",
+    "deploy": "conda activate eb && eb deploy --staged",
+    "predeploy": "npm run build",
     "build:client": "cross-env NODE_ENV=production webpack --config webpack/client/prod.js",
     "build:server": "cross-env NODE_ENV=production webpack --config webpack/server/prod.js",
     "build:node": "cross-env NODE_ENV=production webpack --config webpack/node.js",
@@ -42,7 +46,8 @@
     "react-helmet": "^5.2.0",
     "react-universal-component": "^4.0.0",
     "webpack-flush-chunks": "^2.0.3",
-    "winston": "^3.2.1"
+    "winston": "^3.2.1",
+    "ws": "^8.11.0"
   },
   "devDependencies": {
     "@babel/core": "^7.4.3",
